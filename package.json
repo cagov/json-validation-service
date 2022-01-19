@@ -1,18 +1,25 @@
 {
   "name": "cagov-json-validation-service",
   "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cagov/Cron.git"
-  },
-  "description": "",
+  "description": "Validation Service",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "JSONSchema"
+  ],
+  "author": {
+    "name": "Carter Medlin",
+    "email": "carter@digital.ca.gov",
+    "url": "https://github.com/carterm"
+  },
   "license": "ISC",
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cagov/json-validation-service.git"
+  },
   "dependencies": {
     "@cagov/slack-connector": "^0.0.2",
     "jsonschema": "^1.4.0",
