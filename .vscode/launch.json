@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug DIRECT",
+      "program": "debug.js",
+      "args": [
+        "1"
+      ],
+      "cwd": "${workspaceRoot}/Debug",
+      "outputCapture": "std"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "cagov-json-validation-service",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cagov/Cron.git"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cagov/slack-connector": "^0.0.2",
+    "jsonschema": "^1.4.0",
+    "moment": "^2.29.1"
+  }
+}
