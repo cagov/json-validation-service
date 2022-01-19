@@ -22,4 +22,8 @@ Expects a `POST` request with the following body structure.
 
 ## Code deployment target
 
-- https://us-west-1.console.aws.amazon.com/lambda/?#/functions/jsonValidator
+- https://us-west-1.console.aws.amazon.com/lambda/?#/functions/json-validation-service
+
+## API Endpoint
+
+- https://kzg1dzzr6f.execute-api.us-west-1.amazonaws.com/default/json-validation-service
