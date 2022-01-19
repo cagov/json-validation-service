@@ -77,7 +77,7 @@ module.exports = async function (postBody) {
   });
 
   try {
-    slack.Chat("JSON Validation Started...");
+    await slack.Chat("JSON Validation Started...");
 
     if (!postBody) {
       return returnCompatible(`POST body missing.`, 422);
@@ -125,7 +125,7 @@ module.exports = async function (postBody) {
     });
 
     console.log(`Validating ${input.work.length} rows...`);
-    slack.Reply(`Validating ${input.work.length} rows...`);
+    await slack.Reply(`Validating ${input.work.length} rows...`);
 
     let timestamp = new Date().getTime();
     const results = await async_validator(workForValidation, threadCount).catch(
@@ -142,8 +142,8 @@ module.exports = async function (postBody) {
         error: validateJSON_getMessage(e.result.errors[0]),
       }));
 
-    slack.Reply("JSON Validation Completed...");
-    slack.Top.ReactionAdd("white_check_mark");
+    await slack.Reply("JSON Validation Completed...");
+    await slack.Top.ReactionAdd("white_check_mark");
 
     if (errors.length) {
       return returnCompatible(JSON.stringify(errors), 200);
