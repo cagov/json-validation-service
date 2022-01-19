@@ -28,7 +28,7 @@ jobs: #Workflow run is made up of one or more jobs
           npm ci
       - name: deploy
         run: |
-          zip -j deploy.zip ./* #--> Zip the Code As we know lambda function accept the zip file.
+          zip -j -r deploy.zip ./* #--> Zip the Code As we know lambda function accept the zip file.
           aws lambda update-function-code --function-name=json-validation-service --zip-file=fileb://deploy.zip
 
 # At last the AWS CLI command to Update the Zip file with existing One (With Correct Function Name)
