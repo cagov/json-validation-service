@@ -57,7 +57,7 @@ const validateJSON_getMessage = (err) =>
  * @param {*} [body]
  * @param {number} [statusCode]
  */
-const returnCompatible = (slack, body, statusCode) => {
+const returnCompatible = async (slack, body, statusCode) => {
   /** @type {ValidationServiceResponse} */
   let response = {};
 
@@ -69,7 +69,7 @@ const returnCompatible = (slack, body, statusCode) => {
     response.body = body;
   }
 
-  slack.Reply(`\`\`\`${JSON.stringify(response, null, 2)}\`\`\``);
+  await slack.Reply(`\`\`\`${JSON.stringify(response, null, 2)}\`\`\``);
 
   return response;
 };
