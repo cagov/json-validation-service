@@ -72,7 +72,13 @@ const returnCompatible = (body, statusCode) => {
  * @param {*} postBody
  */
 module.exports = async function (postBody) {
+  const slack = new SlackConnector(slackBotGetToken(), debugChannel, {
+    username: "json Validator",
+  });
+
   try {
+    slack.Chat("JSON Validation Started...");
+
     if (!postBody) {
       return returnCompatible(`POST body missing.`, 422);
     }
@@ -119,6 +125,7 @@ module.exports = async function (postBody) {
     });
 
     console.log(`Validating ${input.work.length} rows...`);
+    slack.Reply(`Validating ${input.work.length} rows...`);
 
     let timestamp = new Date().getTime();
     const results = await async_validator(workForValidation, threadCount).catch(
@@ -135,6 +142,9 @@ module.exports = async function (postBody) {
         error: validateJSON_getMessage(e.result.errors[0]),
       }));
 
+    slack.Reply("JSON Validation Completed...");
+    slack.Top.ReactionAdd("white_check_mark");
+
     if (errors.length) {
       return returnCompatible(JSON.stringify(errors), 200);
       //return returnCompatible(context, "some error", 200)
@@ -143,9 +153,6 @@ module.exports = async function (postBody) {
       return returnCompatible(null, 204); //OK - No content
     }
   } catch (e) {
-    const slack = new SlackConnector(slackBotGetToken(), debugChannel, {
-      username: "json Validator",
-    });
     await slack.Error(e);
     return returnCompatible(`Error - ${e.message}`, 500);
   }
