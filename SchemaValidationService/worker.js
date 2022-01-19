@@ -52,12 +52,12 @@ const validateJSON_getMessage = (err) =>
  */
 
 /**
- * compatible function return for Microsoft Azure or Amazon Lambda
+ * Returns and reports
+ * @param {SlackConnector} slack
  * @param {*} [body]
  * @param {number} [statusCode]
  */
-const returnCompatible = (body, statusCode) => {
-  //Amazon Lambda
+const returnCompatible = (slack, body, statusCode) => {
   /** @type {ValidationServiceResponse} */
   let response = {};
 
@@ -68,6 +68,8 @@ const returnCompatible = (body, statusCode) => {
   if (body) {
     response.body = body;
   }
+
+  slack.Reply(`\`\`\`${JSON.stringify(response, null, 2)}\`\`\``);
 
   return response;
 };
@@ -84,7 +86,7 @@ module.exports = async function (postBody) {
     await slack.Chat("JSON Validation Started...");
 
     if (!postBody) {
-      return returnCompatible(`POST body missing.`, 422);
+      return returnCompatible(slack, `POST body missing.`, 422);
     }
 
     /** @type {ValidationServiceBody} */
@@ -99,7 +101,7 @@ module.exports = async function (postBody) {
           //base64
           input = JSON.parse(Buffer.from(postBody, "base64").toString("utf-8"));
         } catch (e) {
-          return returnCompatible(`Invalid JSON or base64 body.`, 422);
+          return returnCompatible(slack, `Invalid JSON or base64 body.`, 422);
         }
       }
     } else {
@@ -107,11 +109,11 @@ module.exports = async function (postBody) {
     }
 
     if (!input.schema) {
-      return returnCompatible(`POST schema missing.`, 422);
+      return returnCompatible(slack, `POST schema missing.`, 422);
     }
 
     if (!input.work?.length) {
-      return returnCompatible(`POST work missing.`, 422);
+      return returnCompatible(slack, `POST work missing.`, 422);
     }
 
     /** @type {threadWork[]} */
@@ -146,18 +148,16 @@ module.exports = async function (postBody) {
         error: validateJSON_getMessage(e.result.errors[0]),
       }));
 
-    await slack.Reply("JSON Validation Completed...");
     await slack.Top.ReactionAdd("white_check_mark");
 
     if (errors.length) {
-      return returnCompatible(JSON.stringify(errors), 200);
-      //return returnCompatible(context, "some error", 200)
+      return returnCompatible(slack, JSON.stringify(errors), 200);
     } else {
       //Validation passed, nothing to report
-      return returnCompatible(null, 204); //OK - No content
+      return returnCompatible(slack, null, 204); //OK - No content
     }
   } catch (e) {
     await slack.Error(e);
-    return returnCompatible(`Error - ${e.message}`, 500);
+    return returnCompatible(slack, `Error - ${e.message}`, 500);
   }
 };
