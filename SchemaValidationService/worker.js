@@ -1,20 +1,24 @@
 // @ts-check
 const SlackConnector = require("@cagov/slack-connector");
-const debugChannel = "C01H6RB99E2"; //#carter-dev
 
-const slackBotGetToken = () => {
-  const token = process.env["SLACKBOT_TOKEN"];
+/**
+ *
+ * @param {string} key
+ * @returns
+ */
+const getConfigItem = (key) => {
+  const data = process.env[key];
 
-  if (!token) {
-    //developers that don't set the creds can still use the rest of the code
-    console.error(
-      'You need local.settings.json to contain "SLACKBOT_TOKEN" to use slackbot features.'
-    );
+  if (!data) {
+    console.error(`local.settings.json needs the key "${key}".`);
     return;
   }
 
-  return token;
+  return data;
 };
+
+const slackBotGetToken = () => getConfigItem("SLACKBOT_TOKEN");
+const slackBotGetChannel = () => getConfigItem("SLACKBOT_CHANNEL");
 
 const threadCount = 6;
 const { Schema } = require("jsonschema"); //https://www.npmjs.com/package/jsonschema
@@ -72,7 +76,7 @@ const returnCompatible = (body, statusCode) => {
  * @param {*} postBody
  */
 module.exports = async function (postBody) {
-  const slack = new SlackConnector(slackBotGetToken(), debugChannel, {
+  const slack = new SlackConnector(slackBotGetToken(), slackBotGetChannel(), {
     username: "json Validator",
   });
 
