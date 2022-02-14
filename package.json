@@ -21,7 +21,7 @@
     "url": "https://github.com/cagov/json-validation-service.git"
   },
   "dependencies": {
-    "@cagov/slack-connector": "^0.0.2",
+    "@cagov/slack-connector": "^0.1.0",
     "jsonschema": "^1.4.0",
     "moment": "^2.29.1"
   }
