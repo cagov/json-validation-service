@@ -9,7 +9,7 @@ const { ValidationServiceBody } = require("../SchemaValidationService/worker");
 
 const indexCode = require("../SchemaValidationService/worker");
 
-const testSchema = require("./testSchema.json");
+const testSchema = require("./testSchema.schema.json");
 const testData = JSON.stringify(require("./testData.json"));
 
 /** @type {ValidationServiceBody} */

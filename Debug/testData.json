@@ -1,4 +1,5 @@
 {
+  "$schema": "testSchema.schema.json",
   "meta": {
     "PUBLISHED_DATE": "2022-01-11",
     "coverage": "Alpine"

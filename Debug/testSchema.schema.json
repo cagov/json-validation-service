@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema",
   "definitions": {
     "date-YYYY-MM-DD": {
       "type": "string",
@@ -71,52 +72,55 @@
   },
   "type": "object",
   "additionalProperties": false,
+  "required": ["meta", "data"],
   "properties": {
+    "$schema": {
+      "type": "string"
+    },
     "meta": {
-      "required": true,
       "type": "object",
       "additionalProperties": false,
+      "required": ["PUBLISHED_DATE", "coverage"],
       "properties": {
         "PUBLISHED_DATE": {
-          "required": true,
           "$ref": "#/definitions/date-YYYY-MM-DD"
         },
         "coverage": {
-          "required": true,
           "$ref": "#/definitions/county"
         }
       }
     },
     "data": {
-      "required": true,
       "type": "object",
       "additionalProperties": false,
+      "required": ["latest", "time_series"],
       "properties": {
         "latest": {
-          "required": true,
           "type": "object",
           "additionalProperties": false,
+          "required": ["POSITIVITY_RATE"],
           "properties": {
             "POSITIVITY_RATE": {
-              "required": true,
               "type": "object",
               "additionalProperties": false,
+              "required": [
+                "test_positivity_7_days",
+                "test_positivity_7_days_delta_7_days",
+                "TESTING_UNCERTAINTY_PERIOD",
+                "POPULATION"
+              ],
               "properties": {
                 "test_positivity_7_days": {
-                  "required": true,
                   "type": "number",
                   "minimum": 0
                 },
                 "test_positivity_7_days_delta_7_days": {
-                  "required": true,
                   "type": "number"
                 },
                 "TESTING_UNCERTAINTY_PERIOD": {
-                  "required": true,
                   "$ref": "#/definitions/date-YYYY-MM-DD"
                 },
                 "POPULATION": {
-                  "required": true,
                   "type": "integer"
                 }
               }
@@ -124,47 +128,48 @@
           }
         },
         "time_series": {
-          "required": true,
           "type": "object",
           "additionalProperties": false,
+          "required": [
+            "TOTAL_TESTS",
+            "TEST_POSITIVITY_RATE_7_DAYS",
+            "DAILY_TEST_POSITIVITY_RATE"
+          ],
           "properties": {
             "TOTAL_TESTS": {
-              "required": true,
               "type": "object",
               "additionalProperties": false,
+              "required": ["DATE_RANGE", "VALUES"],
               "properties": {
                 "DATE_RANGE": {
-                  "required": true,
                   "type": "object",
                   "additionalProperties": false,
+                  "required": ["MINIMUM", "MAXIMUM"],
                   "properties": {
                     "MINIMUM": {
-                      "required": true,
                       "$ref": "#/definitions/date-YYYY-MM-DD"
                     },
                     "MAXIMUM": {
-                      "required": true,
                       "$ref": "#/definitions/date-YYYY-MM-DD"
                     }
                   }
                 },
                 "VALUES": {
-                  "required": true,
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 300,
                   "maxItems": 900,
+                  "additionalProperties": false,
+                  "required": ["items"],
                   "items": {
-                    "required": true,
                     "type": "object",
                     "additionalProperties": false,
+                    "required": ["DATE", "VALUE"],
                     "properties": {
                       "DATE": {
-                        "required": true,
                         "$ref": "#/definitions/date-YYYY-MM-DD"
                       },
                       "VALUE": {
-                        "required": true,
                         "type": "integer",
                         "minimum": 0
                       }
@@ -174,42 +179,39 @@
               }
             },
             "TEST_POSITIVITY_RATE_7_DAYS": {
-              "required": true,
               "type": "object",
               "additionalProperties": false,
+              "required": ["DATE_RANGE", "VALUES"],
               "properties": {
                 "DATE_RANGE": {
-                  "required": true,
                   "type": "object",
                   "additionalProperties": false,
+                  "required": ["MINIMUM", "MAXIMUM"],
                   "properties": {
                     "MINIMUM": {
-                      "required": true,
                       "$ref": "#/definitions/date-YYYY-MM-DD"
                     },
                     "MAXIMUM": {
-                      "required": true,
                       "$ref": "#/definitions/date-YYYY-MM-DD"
                     }
                   }
                 },
                 "VALUES": {
-                  "required": true,
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 300,
                   "maxItems": 900,
+                  "additionalProperties": false,
+                  "required": ["items"],
                   "items": {
-                    "required": true,
                     "type": "object",
                     "additionalProperties": false,
+                    "required": ["DATE", "VALUE"],
                     "properties": {
                       "DATE": {
-                        "required": true,
                         "$ref": "#/definitions/date-YYYY-MM-DD"
                       },
                       "VALUE": {
-                        "required": true,
                         "type": "number",
                         "minimum": 0
                       }
@@ -219,42 +221,39 @@
               }
             },
             "DAILY_TEST_POSITIVITY_RATE": {
-              "required": true,
               "type": "object",
               "additionalProperties": false,
+              "required": ["DATE_RANGE", "VALUES"],
               "properties": {
                 "DATE_RANGE": {
-                  "required": true,
                   "type": "object",
                   "additionalProperties": false,
+                  "required": ["MINIMUM", "MAXIMUM"],
                   "properties": {
                     "MINIMUM": {
-                      "required": true,
                       "$ref": "#/definitions/date-YYYY-MM-DD"
                     },
                     "MAXIMUM": {
-                      "required": true,
                       "$ref": "#/definitions/date-YYYY-MM-DD"
                     }
                   }
                 },
                 "VALUES": {
-                  "required": true,
                   "type": "array",
                   "uniqueItems": true,
                   "minItems": 300,
                   "maxItems": 900,
+                  "additionalProperties": false,
+                  "required": ["items"],
                   "items": {
-                    "required": true,
                     "type": "object",
                     "additionalProperties": false,
+                    "required": ["DATE", "VALUE"],
                     "properties": {
                       "DATE": {
-                        "required": true,
                         "$ref": "#/definitions/date-YYYY-MM-DD"
                       },
                       "VALUE": {
-                        "required": true,
                         "type": "number",
                         "minimum": 0
                       }
