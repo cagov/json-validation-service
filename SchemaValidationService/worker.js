@@ -53,7 +53,7 @@ const validateJSON_getMessage = (err) =>
 
 /**
  * Returns and reports
- * @param {SlackConnector} slack
+ * @param {SlackConnector} [slack]
  * @param {*} [body]
  * @param {number} [statusCode]
  */
@@ -69,7 +69,12 @@ const returnCompatible = async (slack, body, statusCode) => {
     response.body = body;
   }
 
-  await slack.Reply(`\`\`\`${JSON.stringify(response, null, 2)}\`\`\``);
+  if (slack) {
+    if (!slack.thread_ts) {
+      await slack.Chat(`Validation Response - _${response.statusCode}_`);
+    }
+    await slack.Reply(`*body*\n\n\`\`\`${response.body?.slice(0, 2000)}\`\`\``);
+  }
 
   return response;
 };
@@ -83,7 +88,7 @@ module.exports = async function (postBody) {
   });
 
   try {
-    await slack.Chat("JSON Validation Started...");
+    //await slack.Chat("JSON Validation Started...");
 
     if (!postBody) {
       return returnCompatible(slack, `POST body missing.`, 422);
@@ -131,7 +136,7 @@ module.exports = async function (postBody) {
     });
 
     console.log(`Validating ${input.work.length} rows...`);
-    await slack.Reply(`Validating ${input.work.length} rows...`);
+    //await slack.Reply(`Validating ${input.work.length} rows...`);
 
     let timestamp = new Date().getTime();
     const results = await async_validator(workForValidation, threadCount).catch(
@@ -148,13 +153,13 @@ module.exports = async function (postBody) {
         error: validateJSON_getMessage(e.result.errors[0]),
       }));
 
-    await slack.Top.ReactionAdd("white_check_mark");
+    //await slack.Top.ReactionAdd("white_check_mark");
 
     if (errors.length) {
       return returnCompatible(slack, JSON.stringify(errors), 200);
     } else {
       //Validation passed, nothing to report
-      return returnCompatible(slack, null, 204); //OK - No content
+      return returnCompatible(null, null, 204); //OK - No content
     }
   } catch (e) {
     await slack.Error(e);
